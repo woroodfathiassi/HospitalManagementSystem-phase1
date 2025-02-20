@@ -141,9 +141,9 @@ namespace HospitalManagementSystem.Managements
             Console.WriteLine("Prescription updated successfully.");
         }
 
-        public void DeleteDoctor(int preId)
+        public void DeletePrescription(int preId)
         {
-            var pre = context.Doctors.FirstOrDefault(p => p.Id == preId);
+            var pre = context.Prescriptions.FirstOrDefault(p => p.PrescriptionId == preId);
 
             if (pre is null)
             {
@@ -151,7 +151,7 @@ namespace HospitalManagementSystem.Managements
                 return;
             }
 
-            context.Doctors.Remove(pre);
+            context.Prescriptions.Remove(pre);
             context.SaveChanges();
             Console.WriteLine("Prescription deleted successfully.");
         }

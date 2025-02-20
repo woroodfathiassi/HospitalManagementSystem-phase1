@@ -268,6 +268,8 @@ class Program
                 Console.WriteLine("Invalid choice! Please select a valid option.");
                 break;
         }
+        Console.WriteLine("\nPress any key to return...");
+        Console.ReadKey();
         PatientMenu(patientManagement);
     }
 
@@ -746,7 +748,7 @@ class Program
                     Console.WriteLine("Invalid ID. Please enter a valid numeric Prescription ID:");
                 }
 
-                prescriptionManagement.DeleteDoctor(deletePreId);
+                prescriptionManagement.DeletePrescription(deletePreId);
                 break;
             case "5":
                 return;
@@ -754,6 +756,8 @@ class Program
                 Console.WriteLine("Invalid choice! Please select a valid option.");
                 break;
         }
+        Console.WriteLine("\nPress any key to return...");
+        Console.ReadKey();
         PrescriptionMenu(prescriptionManagement);
     }
 
@@ -920,6 +924,4 @@ class Program
         Console.ReadKey();
         BillingMenu(billingManagement);
     }
-
-    
 }
