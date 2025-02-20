@@ -14,7 +14,6 @@ namespace HospitalManagementSystem.Entities
 
         public List<Medication> Medications { get; set; }
 
-        //public int BillId { get; set; }
         public Bill Bill {  get; set; }
 
         public int DoctorId { get; set; }

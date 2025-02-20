@@ -1,7 +1,10 @@
-﻿using HospitalManagementSystem.Entities;
+﻿using Azure;
+using HospitalManagementSystem.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +17,19 @@ namespace HospitalManagementSystem.Managements
         public BillingManagement() 
         {
             context = new HMSDBContext();
+        }
+
+        public void AddNewBill(int prescriptionId, decimal amount)
+        {
+            context.Bills.Add(new Bill
+            {
+                PrescriptionId = prescriptionId,
+                Amount = amount,
+                BillDate = DateTime.Now,
+                Status = BillStatus.Unpaid
+            });
+            context.SaveChanges();
+            Console.WriteLine("Bill added successfully.");
         }
 
         public void ViewBills()

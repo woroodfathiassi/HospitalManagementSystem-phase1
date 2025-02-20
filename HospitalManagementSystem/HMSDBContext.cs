@@ -36,7 +36,7 @@ namespace HospitalManagementSystem
                 new Medication { MedicationId = 40, Name = "Amoxicillin", Quantity = 4, Price = 12.99m }
             );
 
-            modelBuilder.Entity<Prescription>().ToTable("Prescriptions", t => t.HasTrigger("Insert_Bill_Automatically"));
+            //modelBuilder.Entity<Prescription>().ToTable("Prescriptions", t => t.HasTrigger("Insert_Bill_Automatically"));
 
         }
 

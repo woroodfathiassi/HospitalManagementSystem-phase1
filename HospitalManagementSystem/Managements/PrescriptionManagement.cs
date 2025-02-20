@@ -1,8 +1,11 @@
-﻿using HospitalManagementSystem.Entities;
+﻿using Azure;
+using HospitalManagementSystem.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -60,23 +63,26 @@ namespace HospitalManagementSystem.Managements
                 
             }
 
-            context.Prescriptions.Add(new Prescription
+            var prescription = new Prescription
             {
                 PrescriptionDate = DateTime.Now,
                 DoctorId = doctorId,
                 PatientId = patientId,
                 Medications = medicationAvaliables
-            });
+            };
 
-            //context.Bills.Add(new Bill
-            //{
-            //    PrescriptionId = patientId,
-            //});
-
+            context.Prescriptions.Add(prescription);
+          
             context.SaveChanges();
 
+            int insertedPrescriptionId = prescription.PrescriptionId; 
+
+            BillingManagement billingManagement = new BillingManagement();
+            billingManagement.AddNewBill(insertedPrescriptionId, totalPrice);
+            Console.WriteLine("Prescription added successfully.");
+            Console.WriteLine("Bill added successfully.");
         }
-    
+
         public void ViewPrescriptions()
         {
             var prescriptions = context.Prescriptions.AsNoTracking().ToList();
@@ -86,6 +92,68 @@ namespace HospitalManagementSystem.Managements
             }
         }
 
+        public void UpdatePrescription(int preId, int patientId, int doctorId, List<int> medicationIds)
+        {
+            var prescription = context.Prescriptions.FirstOrDefault(p => p.PrescriptionId == preId);
 
+            if (prescription is null)
+            {
+                Console.WriteLine("Prescription not found.");
+                return;
+            }
+
+            prescription.PatientId = patientId;
+            prescription.DoctorId = doctorId;
+
+            var totalPrice = 0m;
+            var medicationAvaliables = new List<Medication>();
+            for (int i = 0; i < medicationIds.Count; i++)
+            {
+                var medication = context.Medications.FirstOrDefault(p => p.MedicationId == medicationIds[i]);
+
+                if (medication == null)
+                {
+                    Console.WriteLine($"There is no any medication with {medicationIds[i]} ID!");
+                }
+                else
+                {
+                    if (medication.Quantity <= 0)
+                    {
+                        Console.WriteLine($"The Quantity of medication with {medicationIds[i]} ID is ZERO!");
+                    }
+                    else
+                    {
+                        totalPrice += medication.Price;
+                        medication.Quantity--;
+                        medicationAvaliables.Add(medication);
+                    }
+                }
+
+            }
+
+            //prescription.Medications = medicationAvaliables;
+
+            //var bill = context.Bills.Include(p => p.Prescription).FirstOrDefault(p => p.PrescriptionId == preId);
+            //bill.Amount = totalPrice;
+            
+
+            context.SaveChanges();
+            Console.WriteLine("Prescription updated successfully.");
+        }
+
+        public void DeleteDoctor(int preId)
+        {
+            var pre = context.Doctors.FirstOrDefault(p => p.Id == preId);
+
+            if (pre is null)
+            {
+                Console.WriteLine("Prescription not found.");
+                return;
+            }
+
+            context.Doctors.Remove(pre);
+            context.SaveChanges();
+            Console.WriteLine("Prescription deleted successfully.");
+        }
     }
 }

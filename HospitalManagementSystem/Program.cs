@@ -32,9 +32,9 @@ class Program
         //}
 
         //PrescriptionManagement p = new PrescriptionManagement();
-        //p.IssuePrescription(1,1, [10]);
+        //p.IssuePrescription(2,2, [44]);
 
-        
+
 
         Menu();
 
@@ -640,7 +640,45 @@ class Program
         switch (choice)
         {
             case "1":
+                Console.WriteLine("Enter Patient ID:");
+                int patientId;
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out patientId) && patientId > 0)
+                        break;
+                    Console.WriteLine("Invalid ID. Please enter a valid numeric Patient ID:");
+                }
 
+                Console.WriteLine("Enter Doctor ID:");
+                int doctorId;
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out doctorId) && doctorId > 0)
+                        break;
+                    Console.WriteLine("Invalid ID. Please enter a valid numeric Doctor ID:");
+                }
+
+                Console.WriteLine("Enter at least one Medication ID (Enter 0 to stop after adding at least one):");
+                List<int> medicationIds = new List<int>();
+                while (true)
+                {
+                    Console.Write("Medication ID: ");
+                    int medId;
+
+                    if (int.TryParse(Console.ReadLine(), out medId) && medId > 0)
+                    {
+                        medicationIds.Add(medId);
+                    }
+                    else if (medId == 0 && medicationIds.Count > 0)
+                    {
+                        break; 
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter a valid Medication ID.");
+                    }
+                }
+                prescriptionManagement.IssuePrescription(patientId, doctorId, medicationIds);
                 break;
             case "2":
                 prescriptionManagement.ViewPrescriptions();
@@ -648,6 +686,69 @@ class Program
                 Console.ReadKey();
                 break;
             case "3":
+                Console.WriteLine("Enter Prescription ID:");
+                int prescriptionId2;
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out prescriptionId2) && prescriptionId2 > 0)
+                        break;
+                    Console.WriteLine("Invalid ID. Please enter a valid numeric Prescription ID:");
+                }
+
+                Console.WriteLine("Enter Patient ID:");
+                int patientId2;
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out patientId2) && patientId2 > 0)
+                        break;
+                    Console.WriteLine("Invalid ID. Please enter a valid numeric Patient ID:");
+                }
+
+                Console.WriteLine("Enter Doctor ID:");
+                int doctorId2;
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out doctorId2) && doctorId2 > 0)
+                        break;
+                    Console.WriteLine("Invalid ID. Please enter a valid numeric Doctor ID:");
+                }
+
+                Console.WriteLine("Enter at least one Medication ID (Enter 0 to stop after adding at least one):");
+                List<int> medicationIds2 = new List<int>();
+                while (true)
+                {
+                    Console.Write("Medication ID: ");
+                    int medId;
+
+                    if (int.TryParse(Console.ReadLine(), out medId) && medId > 0)
+                    {
+                        medicationIds2.Add(medId);
+                    }
+                    else if (medId == 0 && medicationIds2.Count > 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter a valid Medication ID.");
+                    }
+                }
+
+                prescriptionManagement.UpdatePrescription(prescriptionId2, patientId2, doctorId2, medicationIds2);
+                break;
+            case "4":
+                Console.WriteLine("Enter Prescription ID:");
+                int deletePreId;
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out deletePreId) && deletePreId > 0)
+                        break;
+                    Console.WriteLine("Invalid ID. Please enter a valid numeric Prescription ID:");
+                }
+
+                prescriptionManagement.DeleteDoctor(deletePreId);
+                break;
+            case "5":
                 return;
             default:
                 Console.WriteLine("Invalid choice! Please select a valid option.");
